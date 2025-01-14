@@ -171,6 +171,10 @@ Route::group('', ['namespace' => 'fweb'], static function (): void {
         Route::get('/{slug}', 'Inventaris@detail')->name('fweb.inventaris.detail');
     });
 
+    Route::group('profil-desa', static function (): void {
+        Route::get('/', 'Profil@index')->name('fweb.profil.index');
+    });
+
     Route::group('pengaduan', static function (): void {
         Route::post('/kirim', 'Pengaduan@kirim')->name('fweb.pengaduan.kirim');
         Route::get('/{p?}', 'Pengaduan@index')->name('fweb.pengaduan.index');

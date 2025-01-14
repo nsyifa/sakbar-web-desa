@@ -139,6 +139,7 @@ define('STAT_LAINNYA', serialize([
     'layanan-mandiri/beranda'            => 'Layanan Mandiri',
     'inventaris'                         => 'Inventaris',
     'struktur-organisasi-dan-tata-kerja' => 'SOTK [Desa]',
+    'profil-desa'                        => 'Profil Desa'
 ]));
 
 // Jabatan Kelompok
@@ -291,6 +292,6 @@ class Referensi_model extends MY_Model
     {
         $dafault = $this->list_ref(JENIS_PERATURAN_DESA);
 
-        return collect($dafault)->transform(static fn ($item) => str_replace(['Desa', 'desa'], ucwords(setting('sebutan_desa')), $item))->unique()->values();
+        return collect($dafault)->transform(static fn($item) => str_replace(['Desa', 'desa'], ucwords(setting('sebutan_desa')), $item))->unique()->values();
     }
 }
