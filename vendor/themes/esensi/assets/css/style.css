@@ -316,10 +316,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 :root {
   --primary-base-color: #355e3b;
   --primary-darken-color: #2d5032;
-  --secondary-base-color: #d08e0d;
+  --secondary-base-color: #9b9b3b
   --secondary-darken-color: #946200;
-  --accent-base-color: #00ba88;
-  --accent-darken-color: #00966d;
+  --accent-base-color: #392413;
+  --accent-darken-color: #2b1b0e;
 }
 html {
   scroll-behavior: smooth;
@@ -7606,6 +7606,22 @@ article .box > div:nth-child(3) .table-responsive table {
   }
   .lg\:p-5 {
     padding: 1.25rem;
+  }
+  .lg\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  .lg\:px-10 {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+  .lg\:px-12 {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+  .lg\:px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
   .lg\:px-5 {
     padding-left: 1.25rem;
