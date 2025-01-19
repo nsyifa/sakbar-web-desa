@@ -31,3 +31,9 @@ Stack trace:
 #18 C:\laragon\www\OpenSID-2501.0.0\OpenSID-2501.0.0\vendor\codeigniter\framework\system\core\CodeIgniter.php(533): First->index()
 #19 C:\laragon\www\OpenSID-2501.0.0\OpenSID-2501.0.0\index.php(284): require_once('C:\\laragon\\www\\...')
 #20 {main}
+ERROR - 2025-01-14 23:20:23 --> 404 Page Not Found: Halaman_baru/index
+ERROR - 2025-01-14 23:21:15 --> 404 Page Not Found: Halaman_baru/index
+ERROR - 2025-01-14 23:22:38 --> 404 Page Not Found: Halaman_baru/index
+ERROR - 2025-01-14 23:22:47 --> 404 Page Not Found: Halaman_baru/index
+ERROR - 2025-01-14 23:53:43 --> 404 Page Not Found: Halaman_baru/index
+ERROR - 2025-01-14 23:54:36 --> 404 Page Not Found: Halaman_baru/index
