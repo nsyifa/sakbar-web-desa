@@ -6179,6 +6179,9 @@ article .box > div:nth-child(3) .table-responsive table {
 .pt-5 {
   padding-top: 1.25rem;
 }
+.pb-5 {
+  padding-bottom: 1.25rem;
+}
 .pb-3 {
   padding-bottom: 0.75rem;
 }
@@ -6219,6 +6222,9 @@ article .box > div:nth-child(3) .table-responsive table {
   text-align: center;
 }
 .text-right {
+  text-align: right;
+}
+.lg\:text-right {
   text-align: right;
 }
 .text-justify {
