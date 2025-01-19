@@ -155,7 +155,7 @@ class Modul extends BaseModel
 
     public function childrens(): HasMany
     {
-        return $this->hasMany(Modul::class, 'parent', 'id')->with(['childrens' => static fn ($q) => $q->select(['id', 'modul', 'parent', 'url', 'ikon'])]);
+        return $this->hasMany(Modul::class, 'parent', 'id')->with(['childrens' => static fn($q) => $q->select(['id', 'modul', 'parent', 'url', 'ikon'])]);
     }
 
     public function tree($grupId)
@@ -163,27 +163,27 @@ class Modul extends BaseModel
         $superAdmin = is_super_admin();
 
         $modul = $this->with(['childrens' => static function ($q) use ($grupId, $superAdmin) {
-                $q->select(['id', 'parent', 'modul', 'slug', 'url', 'ikon'])
-                    ->when(! UserGrup::isAdministrator($grupId), static function ($query) use ($grupId) {
-                        $query->whereIn('id', static function ($query) use ($grupId) {
-                            $query->select('id_modul')->from('grup_akses')->where('id_grup', $grupId);
-                        });
-                    })
-                    ->when(config_item('demo_mode') && in_array(get_domain(APP_URL), WEBSITE_DEMO), static function ($query) {
-                        $query->whereNotIn('slug', ['layanan-pelanggan', 'pendaftaran-kerjasama']);
-                    })
-                    ->isChild()->isShow()
-                    ->when(! $superAdmin, static function ($query) {
-                        $query->isActive();
-                    })
-                    ->orderBy('urut');
-            }])
-            ->select(['id', 'parent', 'modul', 'slug', 'url', 'ikon'])
-            ->when(! UserGrup::isAdministrator($grupId), static function ($query) use ($grupId) {
+            $q->select(['id', 'parent', 'modul', 'slug', 'url', 'ikon'])
+                ->when(! UserGrup::isAdministrator($grupId), static function ($query) use ($grupId) {
                     $query->whereIn('id', static function ($query) use ($grupId) {
                         $query->select('id_modul')->from('grup_akses')->where('id_grup', $grupId);
                     });
                 })
+                ->when(config_item('demo_mode') && in_array(get_domain(APP_URL), WEBSITE_DEMO), static function ($query) {
+                    $query->whereNotIn('slug', ['layanan-pelanggan', 'pendaftaran-kerjasama']);
+                })
+                ->isChild()->isShow()
+                ->when(! $superAdmin, static function ($query) {
+                    $query->isActive();
+                })
+                ->orderBy('urut');
+        }])
+            ->select(['id', 'parent', 'modul', 'slug', 'url', 'ikon'])
+            ->when(! UserGrup::isAdministrator($grupId), static function ($query) use ($grupId) {
+                $query->whereIn('id', static function ($query) use ($grupId) {
+                    $query->select('id_modul')->from('grup_akses')->where('id_grup', $grupId);
+                });
+            })
             ->isParent()->isShow()
             ->when(! $superAdmin, static function ($query) {
                 $query->isActive();
@@ -222,7 +222,7 @@ class Modul extends BaseModel
             $list_icon = file_get_contents($file);
             $list_icon = explode('.', $list_icon);
 
-            return array_map(static fn ($a): string => explode(':', $a)[0], $list_icon);
+            return array_map(static fn($a): string => explode(':', $a)[0], $list_icon);
         }
 
         return false;

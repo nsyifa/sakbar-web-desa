@@ -523,6 +523,18 @@ class SettingModul extends CI_Model
                 'parent'     => 13,
             ],
             [
+                'modul'      => 'Halaman Baru',
+                'slug'       => 'halaman-baru',
+                'url'        => 'halaman_baru',
+                'aktif'      => 1,
+                'ikon'       => 'fa-desktop',
+                'urut'       => 13,
+                'level'      => 2,
+                'hidden'     => 0,
+                'ikon_kecil' => '',
+                'parent'     => 13,
+            ],
+            [
                 'modul'      => 'Log Penduduk',
                 'slug'       => 'log-penduduk',
                 'url'        => 'penduduk_log',

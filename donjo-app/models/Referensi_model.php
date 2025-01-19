@@ -73,6 +73,7 @@ define('LINK_TIPE', serialize([
     '11' => 'Lembaga',
     '9'  => 'Data Suplemen',
     '10' => 'Status IDM',
+    '12' => 'Halaman Baru',
     '99' => 'Eksternal',
 ]));
 

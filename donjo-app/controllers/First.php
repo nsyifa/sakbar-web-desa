@@ -58,6 +58,7 @@ class First extends Web_Controller
         // $this->security_trusted_host->handle();
 
         $this->load->model('first_artikel_m');
+        $this->load->model('first_halaman_m');
         $this->load->model('first_penduduk_m');
         $this->load->model('penduduk_model');
         $this->load->model('surat_model'); // TODO: Cek digunakan halaman apa saja
@@ -117,6 +118,43 @@ class First extends Web_Controller
 
         $this->_get_common_data($data);
         $this->track_model->track_desa('first');
+        theme_view($this->template, $data);
+    }
+
+    public function halaman($url = null)
+    {
+        if ($url == null) {
+            show_404();
+        }
+
+        if (is_numeric($url)) {
+            $data_halaman = $this->first_halaman_m->get_halaman_by_id($url);
+            if ($data_halaman) {
+                $data_halaman['slug'] = $this->security->xss_clean($data_halaman['slug']);
+                redirect('halaman/' . $data_halaman['slug']);
+            }
+        }
+        $this->load->model('shortcode_model');
+        $data = $this->includes;
+        $this->first_halaman_m->hit($url); // catat halaman diakses
+        $data['single_halaman'] = $this->first_halaman_m->get_halaman($url);
+        $id                     = $data['single_halaman']['id'];
+
+        // replace isi halaman dengan shortcodify
+        $data['single_halaman']['isi'] = $this->shortcode_model->shortcode($data['single_halaman']['isi']);
+        $data['title']                 = ucwords($data['single_halaman']['judul']);
+
+        // $response = [
+        //     'status' => 'success',
+        //     'data' => $data['single_halaman'],
+        // ];
+
+        // return $this->output
+        //     ->set_content_type('application/json')
+        //     ->set_output(json_encode($response));
+
+        $this->_get_common_data($data);
+        $this->set_template('layouts/halaman.tpl.php');
         theme_view($this->template, $data);
     }
 

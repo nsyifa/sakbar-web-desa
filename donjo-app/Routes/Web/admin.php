@@ -942,8 +942,8 @@ Route::group('laporan_inventaris', static function (): void {
 // Sekretariat > Klasifikasi Surat
 Route::group('klasifikasi', static function (): void {
     Route::get('/clear', static function (): void {
-            redirect('klasifikasi');
-        });
+        redirect('klasifikasi');
+    });
     Route::get('/', 'Klasifikasi@index')->name('klasifikasi.index');
     Route::get('/datatables', 'Klasifikasi@datatables')->name('klasifikasi.datatables');
     Route::get('/form/{id?}', 'Klasifikasi@form')->name('klasifikasi.form');
@@ -1982,6 +1982,26 @@ Route::group('web', static function (): void {
     Route::post('update_slider', 'Web@update_slider')->name('web.update_slider');
     Route::post('reset/{cat}', 'Web@reset')->name('web.reset');
     Route::get('{cat?}', 'Web@index')->name('web.index');
+});
+
+// Admin Web > Halaman Baru
+Route::group('halaman_baru', static function (): void {
+    Route::get('clear', static function (): void {
+        redirect('halaman_baru');
+    });
+    Route::get('/', 'Halaman_baru@index')->name('halaman_baru.index');
+    Route::get('form/{cat?}/{id?}', 'Halaman_baru@form')->name('halaman_baru.form');
+    Route::get('datatables', 'Halaman_baru@datatables')->name('halaman_baru.datatables');
+    Route::post('insert', 'Halaman_baru@insert')->name('halaman_baru.insert');
+    Route::post('update/{cat}/{id?}', 'Halaman_baru@update')->name('halaman_baru.update');
+    Route::match(['GET', 'POST'], 'delete/{cat?}/{id?}', 'Halaman_baru@delete')->name('halaman_baru.delete');
+    Route::match(['GET', 'POST'], 'hapus/{cat}', 'Halaman_baru@hapus')->name('halaman_baru.hapus');
+    Route::get('ubah_kategori_form/{id?}', 'Halaman_baru@ubah_kategori_form')->name('halaman_baru.ubah_kategori_form');
+    Route::post('update_kategori/{id?}', 'Halaman_baru@update_kategori')->name('halaman_baru.update_kategori');
+    Route::get('lock/{column}/{id}', 'Halaman_baru@lock')->name('halaman_baru.lock');
+    Route::get('slider', 'Halaman_baru@slider')->name('halaman_baru.slider');
+    Route::post('update_slider', 'Halaman_baru@update_slider')->name('halaman_baru.update_slider');
+    Route::post('reset/{cat}', 'Halaman_baru@reset')->name('halaman_baru.reset');
 });
 
 // Admin Web > Widget

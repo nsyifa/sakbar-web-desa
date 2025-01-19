@@ -36,6 +36,7 @@
  */
 
 use App\Models\Artikel;
+use App\Models\HalamanBaru;
 use App\Models\Bantuan;
 use App\Models\Kategori;
 use App\Models\Kelompok;
@@ -61,7 +62,7 @@ class Menu extends Admin_Controller
         $parent = $this->input->get('parent') ?? 0;
         $data   = [
             'status'   => [MenuModel::UNLOCK => 'Aktif', MenuModel::LOCK => 'Tidak Aktif'],
-            'subtitle' => $parent > 0 ? '<a href="' . ci_route('menu.index') . '?parent=0">MENU UTAMA </a> / ' . MenuModel::find($parent)->getSelfParents()->reverse()->map(static fn ($item) => $parent == $item['id'] ? strtoupper($item['nama']) : '<a href="' . ci_route('menu.index') . '?parent=' . $item['id'] . '">' . strtoupper($item['nama']) . '</a>')->join(' / ') : '',
+            'subtitle' => $parent > 0 ? '<a href="' . ci_route('menu.index') . '?parent=0">MENU UTAMA </a> / ' . MenuModel::find($parent)->getSelfParents()->reverse()->map(static fn($item) => $parent == $item['id'] ? strtoupper($item['nama']) : '<a href="' . ci_route('menu.index') . '?parent=' . $item['id'] . '">' . strtoupper($item['nama']) . '</a>')->join(' / ') : '',
             'parent'   => $parent,
         ];
 
@@ -76,8 +77,8 @@ class Menu extends Admin_Controller
             $canDelete = can('h');
             $canUpdate = can('u');
 
-            return datatables()->of(MenuModel::child($parent)->with(['parent'])->orderBy('urut', 'asc')->when(in_array($status, ['0', '1']), static fn ($q) => $q->where('enabled', $status)))
-                ->addColumn('drag-handle', static fn () => '<i class="fa fa-sort-alpha-desc"></i>')
+            return datatables()->of(MenuModel::child($parent)->with(['parent'])->orderBy('urut', 'asc')->when(in_array($status, ['0', '1']), static fn($q) => $q->where('enabled', $status)))
+                ->addColumn('drag-handle', static fn() => '<i class="fa fa-sort-alpha-desc"></i>')
                 ->addColumn('ceklist', static function ($row) use ($canDelete) {
                     if ($canDelete) {
                         return '<input type="checkbox" name="id_cb[]" value="' . $row->id . '"/>';
@@ -104,7 +105,7 @@ class Menu extends Admin_Controller
                     }
 
                     return $aksi;
-                })->editColumn('link', static fn ($row) => '<a href="' . $row->linkUrl . '" target="_blank">' . $row->linkUrl . '</a>' )
+                })->editColumn('link', static fn($row) => '<a href="' . $row->linkUrl . '" target="_blank">' . $row->linkUrl . '</a>')
                 ->rawColumns(['drag-handle', 'aksi', 'ceklist', 'link'])
                 ->make();
         }
@@ -118,6 +119,7 @@ class Menu extends Admin_Controller
         $menu                               = new MenuModel();
         $data['link_tipe']                  = unserialize(LINK_TIPE);
         $data['artikel_statis']             = Artikel::select(['id', 'judul'])->statis()->get()->toArray();
+        $data['halaman_baru']             = HalamanBaru::select(['id', 'judul', 'slug'])->get()->toArray();
         $data['kategori_artikel']           = Kategori::select(['slug', 'kategori'])->orderBy('urut')->get()->toArray();
         $data['statistik_penduduk']         = unserialize(STAT_PENDUDUK);
         $data['statistik_keluarga']         = unserialize(STAT_KELUARGA);
@@ -177,7 +179,7 @@ class Menu extends Admin_Controller
     {
         isCan('h');
 
-        if (MenuModel::whereIn('id', $this->request['id_cb'] ?? [$id] )->whereHas('children')->count()) {
+        if (MenuModel::whereIn('id', $this->request['id_cb'] ?? [$id])->whereHas('children')->count()) {
             redirect_with('error', 'Menu tidak dapat dihapus karena masih memiliki submenu');
         }
 

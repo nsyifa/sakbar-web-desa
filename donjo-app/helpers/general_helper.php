@@ -83,7 +83,8 @@ if (! function_exists('can')) {
      *
      * @return array|bool
      */
-    function can($akses = null, $slugModul = null, $adminOnly = false, $demoOnly = false)
+    function
+    can($akses = null, $slugModul = null, $adminOnly = false, $demoOnly = false)
     {
         if ($demoOnly && config_item('demo_mode')) {
             return false;
@@ -102,8 +103,8 @@ if (! function_exists('can')) {
 
                 if (count($grup) === 1 && array_keys($grup)[0] == '*') {
                     $grupAkses = Modul::when(! super_admin(), static function ($query) {
-                            $query->isActive();
-                        })->get();
+                        $query->isActive();
+                    })->get();
                     $rbac = array_values($grup)[0];
                 } else {
                     $grupAkses = Modul::whereIn('slug', array_keys($grup))->isActive()->get();
@@ -133,7 +134,7 @@ if (! function_exists('can')) {
                 // ->select('s2.slug as parent_slug')
                 ->get();
 
-            return $grupAkses->mapWithKeys(static fn ($item) => [
+            return $grupAkses->mapWithKeys(static fn($item) => [
                 $item->slug => [
                     'id_modul' => $item->id_modul,
                     // 'parent_slug' => $item->parent_slug,
@@ -278,7 +279,7 @@ if (! function_exists('identitas')) {
      */
     function identitas(?string $params = null)
     {
-        $identitas = cache()->remember('identitas_desa', 604800, static fn () => Config::appKey()->first());
+        $identitas = cache()->remember('identitas_desa', 604800, static fn() => Config::appKey()->first());
 
         if ($params) {
             return $identitas->{$params};
@@ -537,7 +538,7 @@ if (! function_exists('case_replace')) {
     function case_replace($dari, $ke, $str)
     {
         $replacer = static function (array $matches) use ($ke) {
-            $matches = array_map(static fn ($match) => preg_replace('/[\\[\\]]/', '', $match), $matches);
+            $matches = array_map(static fn($match) => preg_replace('/[\\[\\]]/', '', $match), $matches);
 
             return caseWord($matches[0], $ke);
         };
@@ -981,7 +982,7 @@ if (! function_exists('gis_simbols')) {
     {
         $simbols = DB::table('gis_simbol')->get('simbol');
 
-        return $simbols->map(static fn ($item): array => (array) $item)->toArray();
+        return $simbols->map(static fn($item): array => (array) $item)->toArray();
     }
 }
 
@@ -995,7 +996,7 @@ if (! function_exists('admin_menu')) {
     {
         $grupId = auth()->id_grup;
 
-        return cache()->rememberForever("{$grupId}_admin_menu", static fn () => (new Modul())->tree($grupId)->toArray());
+        return cache()->remember("{$grupId}_admin_menu", 3600, static fn() => (new Modul())->tree($grupId)->toArray());
     }
 }
 
@@ -1007,7 +1008,7 @@ if (! function_exists('menu_tema')) {
      */
     function menu_tema()
     {
-        return cache()->rememberForever('menu_tema', static fn () => (new Menu())->tree()->toArray());
+        return cache()->rememberForever('menu_tema', static fn() => (new Menu())->tree()->toArray());
     }
 }
 
@@ -1150,7 +1151,7 @@ if (! function_exists('emptyData')) {
 if (! function_exists('total_jumlah')) {
     function total_jumlah($data, $column)
     {
-        return array_reduce($data->toArray(), static fn ($carry, $item) => $carry + $item[$column], 0);
+        return array_reduce($data->toArray(), static fn($carry, $item) => $carry + $item[$column], 0);
     }
 }
 
