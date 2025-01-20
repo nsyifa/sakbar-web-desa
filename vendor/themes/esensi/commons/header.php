@@ -11,7 +11,7 @@
     <section style="height:300px;" class="relative z-10 text-center space-y-2 mt-3 px-3 lg:px-5 flex flex-col justify-center items-center w-full">
       <a href="<?= site_url() ?>">
         <figure>
-          <img src="<?= gambar_desa($desa['logo']) ?>" alt="Logo <?= ucfirst($this->setting->sebutan_desa) . ' ' . ucwords($desa['nama_desa']) ?>" class="h-16 mx-auto pb-2">
+          <img src="<?= gambar_desa($desa['logo']) ?>" alt="Logo <?= ucfirst($this->setting->sebutan_desa) . ' ' . ucwords($desa['nama_desa']) ?>" class="h-28 mx-auto pb-2">
         </figure>
         <span class="text-h1 block"><?= NAMA_DESA ?></span>
         <p><?= ucfirst($this->setting->sebutan_kecamatan_singkat) ?>

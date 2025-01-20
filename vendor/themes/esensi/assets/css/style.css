@@ -4792,6 +4792,16 @@ article .box > div:nth-child(3) .table-responsive table {
 .h-20 {
   height: 5rem;
 }
+
+.h-24 {
+  height: 6rem;
+}
+.h-28 {
+  height: 7rem;
+}
+.h-32 {
+  height: 8rem;
+}
 .h-0 {
   height: 0px;
 }
