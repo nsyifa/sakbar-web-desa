@@ -68,7 +68,7 @@ Route::group('/first/artikel', static function (): void {
 Route::group('/artikel', static function (): void {
     Route::get('/kategori/{id}/{p?}', 'First@kategori');
     Route::get('{id}', 'First@artikel');
-    Route::get('/{slug}', 'First@artikel');
+    Route::get('/{thn}/{bln}/{tgl}/{slug}', 'First@artikel');
 });
 
 // Rute untuk Halaman baru
