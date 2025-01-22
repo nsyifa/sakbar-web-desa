@@ -111,59 +111,59 @@ class Dokumen_sekretariat extends Admin_Controller
             $tahun    = $this->input->get('tahun');
             $data     = DokumenHidup::PeraturanDesa($kategori, $tahun);
 
-        return datatables()->of($data)
-            ->addColumn('ceklist', static function ($row) {
-                if (can('h')) {
-                    return '<input type="checkbox" name="id_cb[]" value="' . $row->id . '"/>';
-                }
-            })
-            ->addIndexColumn()
-            ->addColumn('aksi', static function ($row) use ($kategori): string {
-                $aksi = '';
-
-                if (can('u')) {
-                        $aksi .= '<a href="' . route('buku-umum.dokumen_sekretariat.form', ['kat' => $kategori, 'id' => $row->id]) . '" class="btn btn-warning btn-sm"  title="Ubah Data"><i class="fa fa-edit"></i></a> ';
-                }
-
-                if ($row->satuan != null) {
-                    $aksi .= '<a href="' . site_url("dokumen_sekretariat/berkas/{$row->id}/{$row->kategori}/0") . '" class="btn bg-purple btn-sm" title="Unduh"><i class="fa fa-download"></i></a> ';
-                } else {
-                    $aksi .= '<a class="btn bg-purple btn-sm" disabled title="Unduh"><i class="fa fa-download"></i></a> ';
-                }
-
-                if (can('u')) {
-                    if ($row->enabled == StatusEnum::YA) {
-                        $aksi .= '<a href="' . route('buku-umum.dokumen_sekretariat.lock', ['kat' => $kategori, 'id' => $row->id]) . '" class="btn bg-navy btn-sm" title="Nonaktifkan"><i class="fa fa-unlock"></i></a> ';
-                    } else {
-                        $aksi .= '<a href="' . route('buku-umum.dokumen_sekretariat.lock', ['kat' => $kategori, 'id' => $row->id]) . '" class="btn bg-navy btn-sm" title="Aktifkan"><i class="fa fa-lock"></i></a> ';
+            return datatables()->of($data)
+                ->addColumn('ceklist', static function ($row) {
+                    if (can('h')) {
+                        return '<input type="checkbox" name="id_cb[]" value="' . $row->id . '"/>';
                     }
-                }
+                })
+                ->addIndexColumn()
+                ->addColumn('aksi', static function ($row) use ($kategori): string {
+                    $aksi = '';
 
-                if (can('h')) {
-                    $aksi .= '<a href="#" data-href="' . route('buku-umum.dokumen_sekretariat.delete', ['kat' => $kategori, 'id' => $row->id]) . '" class="btn bg-maroon btn-sm"  title="Hapus Data" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash"></i></a> ';
-                }
+                    if (can('u')) {
+                        $aksi .= '<a href="' . ci_route('dokumen_sekretariat.form', ['kat' => $kategori, 'id' => $row->id]) . '" class="btn btn-warning btn-sm"  title="Ubah Data"><i class="fa fa-edit"></i></a> ';
+                    }
 
-                return $aksi . ('<a href="' . route('buku-umum.dokumen_sekretariat.berkas', ['id_dokumen' => $row->id, 'kat' => $kategori, 'tipe' => 1]) . '" target="_blank" class="btn btn-info btn-sm" title="Lihat Dokumen"><i class="fa fa-eye"></i></a>');
-            })
-            ->editColumn('enabled', static fn ($row): string => $row->enabled == StatusEnum::YA ? 'Ya' : 'Tidak')
-            ->editColumn('additional', static function ($row): array {
-                $attr = json_decode($row->attr, true);
-                if ($row->kategori == 1) {
-                    $data['kategori_info_publik'] = $attr['no_kep_kades'] . ' / ' . $attr['tgl_kep_kades'];
-                    $data['tahun']                = $attr['tahun'];
-                } elseif ($row->kategori == 2) {
-                    $data['tgl_keputusan']  = $attr['no_kep_kades'] . ' / ' . $attr['tgl_kep_kades'];
-                    $data['uraian_singkat'] = $attr['uraian'];
-                } elseif ($row->kategori == 3) {
-                    $data['jenis_peraturan'] = $attr['jenis_peraturan'];
-                    $data['tgl_ditetapkan']  = strip_kosong($attr['no_ditetapkan']) . ' / ' . $attr['tgl_ditetapkan'];
-                    $data['uraian_singkat']  = $attr['uraian'];
-                }
+                    if ($row->satuan != null) {
+                        $aksi .= '<a href="' . site_url("dokumen_sekretariat/berkas/{$row->id}/{$row->kategori}/0") . '" class="btn bg-purple btn-sm" title="Unduh"><i class="fa fa-download"></i></a> ';
+                    } else {
+                        $aksi .= '<a class="btn bg-purple btn-sm" disabled title="Unduh"><i class="fa fa-download"></i></a> ';
+                    }
 
-                return $data;
-            })
-            ->rawColumns(['ceklist', 'aksi', 'additional'])
-            ->make();
+                    if (can('u')) {
+                        if ($row->enabled == StatusEnum::YA) {
+                            $aksi .= '<a href="' . ci_route('dokumen_sekretariat.lock', ['kat' => $kategori, 'id' => $row->id]) . '" class="btn bg-navy btn-sm" title="Nonaktifkan"><i class="fa fa-unlock"></i></a> ';
+                        } else {
+                            $aksi .= '<a href="' . ci_route('dokumen_sekretariat.lock', ['kat' => $kategori, 'id' => $row->id]) . '" class="btn bg-navy btn-sm" title="Aktifkan"><i class="fa fa-lock"></i></a> ';
+                        }
+                    }
+
+                    if (can('h')) {
+                        $aksi .= '<a href="#" data-href="' . ci_route('dokumen_sekretariat.delete', ['kat' => $kategori, 'id' => $row->id]) . '" class="btn bg-maroon btn-sm"  title="Hapus Data" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash"></i></a> ';
+                    }
+
+                    return $aksi . ('<a href="' . ci_route('dokumen_sekretariat.berkas', ['id_dokumen' => $row->id, 'kat' => $kategori, 'tipe' => 1]) . '" target="_blank" class="btn btn-info btn-sm" title="Lihat Dokumen"><i class="fa fa-eye"></i></a>');
+                })
+                ->editColumn('enabled', static fn($row): string => $row->enabled == StatusEnum::YA ? 'Ya' : 'Tidak')
+                ->editColumn('additional', static function ($row): array {
+                    $attr = json_decode($row->attr, true);
+                    if ($row->kategori == 1) {
+                        $data['kategori_info_publik'] = $attr['no_kep_kades'] . ' / ' . $attr['tgl_kep_kades'];
+                        $data['tahun']                = $attr['tahun'];
+                    } elseif ($row->kategori == 2) {
+                        $data['tgl_keputusan']  = $attr['no_kep_kades'] . ' / ' . $attr['tgl_kep_kades'];
+                        $data['uraian_singkat'] = $attr['uraian'];
+                    } elseif ($row->kategori == 3) {
+                        $data['jenis_peraturan'] = $attr['jenis_peraturan'];
+                        $data['tgl_ditetapkan']  = strip_kosong($attr['no_ditetapkan']) . ' / ' . $attr['tgl_ditetapkan'];
+                        $data['uraian_singkat']  = $attr['uraian'];
+                    }
+
+                    return $data;
+                })
+                ->rawColumns(['ceklist', 'aksi', 'additional'])
+                ->make();
         }
 
         return show_404();
@@ -232,15 +232,15 @@ class Dokumen_sekretariat extends Admin_Controller
             }
 
             if ($result === false && $data['tipe'] == 1) {
-                redirect_with('error', 'Data gagal disimpan', route('buku-umum.dokumen_sekretariat.perdes', $this->input->post('kategori')));
+                redirect_with('error', 'Data gagal disimpan', ci_route('dokumen_sekretariat.peraturan_desa', $this->input->post('kategori')));
             }
 
             Dokumen::create($data);
 
-            redirect_with('success', 'Data berhasil disimpan', route('buku-umum.dokumen_sekretariat.perdes', $this->input->post('kategori')));
+            redirect_with('success', 'Data berhasil disimpan', ci_route('dokumen_sekretariat.peraturan_desa', $this->input->post('kategori')));
         } catch (Exception $e) {
             log_message('error', $e->getMessage());
-            redirect_with('error', 'Data gagal disimpan', route('buku-umum.dokumen_sekretariat.perdes', $this->input->post('kategori')));
+            redirect_with('error', 'Data gagal disimpan', ci_route('dokumen_sekretariat.peraturan_desa', $this->input->post('kategori')));
         }
     }
 
@@ -251,7 +251,7 @@ class Dokumen_sekretariat extends Admin_Controller
         $redirect = $this->input->post('link_redirect');
 
         if (empty($redirect)) {
-            $redirect = route('buku-umum.dokumen_sekretariat.perdes', $this->input->post('kategori'));
+            $redirect = ci_route('dokumen_sekretariat.perdes', $this->input->post('kategori'));
         }
 
         try {
@@ -269,7 +269,6 @@ class Dokumen_sekretariat extends Admin_Controller
             log_message('error', $e->getMessage());
             redirect_with('error', 'Data gagal disimpan', $redirect);
         }
-
     }
 
     private function upload_dokumen()
@@ -357,10 +356,10 @@ class Dokumen_sekretariat extends Admin_Controller
 
         try {
             Dokumen::destroy($id);
-            redirect_with('success', 'Data berhasil dihapus', route('buku-umum.dokumen_sekretariat.perdes', $kat));
+            redirect_with('success', 'Data berhasil dihapus', ci_route('dokumen_sekretariat.perdes', $kat));
         } catch (Exception $e) {
             log_message('error', $e->getMessage());
-            redirect_with('error', 'Data gagal dihapus', route('buku-umum.dokumen_sekretariat.perdes', $kat));
+            redirect_with('error', 'Data gagal dihapus', ci_route('dokumen_sekretariat.perdes', $kat));
         }
     }
 
@@ -370,10 +369,10 @@ class Dokumen_sekretariat extends Admin_Controller
 
         try {
             Dokumen::destroy($this->request['id_cb']);
-            redirect_with('success', 'Data berhasil dihapus', route('buku-umum.dokumen_sekretariat.perdes', $kat));
+            redirect_with('success', 'Data berhasil dihapus', ci_route('dokumen_sekretariat.perdes', $kat));
         } catch (Exception $e) {
             log_message('error', $e->getMessage());
-            redirect_with('error', 'Data gagal dihapus', route('buku-umum.dokumen_sekretariat.perdes', $kat));
+            redirect_with('error', 'Data gagal dihapus', ci_route('dokumen_sekretariat.perdes', $kat));
         }
     }
 
@@ -381,9 +380,9 @@ class Dokumen_sekretariat extends Admin_Controller
     {
         isCan('u');
         if (Dokumen::gantiStatus($id, 'enabled')) {
-            redirect_with('success', 'Berhasil Ubah Status', route('buku-umum.dokumen_sekretariat.perdes', $kat));
+            redirect_with('success', 'Berhasil Ubah Status', ci_route('dokumen_sekretariat.perdes', $kat));
         }
-        redirect_with('error', 'Gagal Ubah Status', route('buku-umum.dokumen_sekretariat.perdes', $kat));
+        redirect_with('error', 'Gagal Ubah Status', ci_route('dokumen_sekretariat.perdes', $kat));
     }
 
     // $aksi = cetak/unduh
@@ -394,7 +393,7 @@ class Dokumen_sekretariat extends Admin_Controller
         $data['aksi']            = $aksi;
         $data['kat']             = $kat;
         $data['jenis_peraturan'] = JenisPeraturan::all();
-        $data['form_action']     = route('buku-umum.dokumen_sekretariat.daftar', ['kat' => $kat, 'aksi' => $aksi]);
+        $data['form_action']     = ci_route('dokumen_sekretariat.daftar', ['kat' => $kat, 'aksi' => $aksi]);
 
         return view('admin.layouts.components.kades.dialog_cetak', $data);
     }
