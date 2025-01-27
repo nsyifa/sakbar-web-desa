@@ -70,7 +70,7 @@
     tinymce.init({
         selector: 'textarea',
         height: 700,
-        editimage_cors_hosts: ['lh7-rt.googleusercontent.com'],
+        editimage_cors_hosts: ['lh7-rt.googleusercontent.com', 'ibb.co.com'],
         promotion: false,
         theme: 'silver',
         formats: {
